@@ -188,10 +188,10 @@ public final class VirtualWorld
 
 
       Point pt = mouseToPoint(mouseY, mouseX);
-      Background none = new Background("none", imageStore.getImageList("none"));
+      Background none = new Background("none", imageStore.getImageList("space"));
 
       if (world.isOccupied(pt)) {
-         System.out.println(world.getOccupancyCell(pt));
+//         System.out.println(world.getOccupancyCell(pt));
          scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
          world.removeEntity(world.getOccupancyCell(pt));
       }
@@ -200,9 +200,7 @@ public final class VirtualWorld
 //      world.tryAddEntity(miner);
 //      miner.scheduleActions( scheduler, world, imageStore);
 
-      SmashBall ball = new SmashBall(pt, imageStore.getImageList("ball"), 0, 20);
-      world.tryAddEntity(ball);
-      ball.scheduleActions(scheduler, world, imageStore);
+
 
 
 
@@ -215,11 +213,27 @@ public final class VirtualWorld
             Point newPoint = new Point(j, i);
 
 
-            if (manhattan(newPoint, pt) < 7) {
+            if (manhattan(newPoint, pt) < 5) {
                world.setBackgroundCell(newPoint, none);
+               if (world.isOccupied(newPoint)){
+                  if(world.getOccupancyCell(newPoint).getClass().equals(MinerNotFull.class) ||
+                     world.getOccupancyCell(newPoint).getClass().equals(MinerFull.class)){
+                     System.out.println(world.getOccupancyCell(newPoint).getClass());
+                     world.removeEntity(world.getOccupancyCell(newPoint));
+                     scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
+
+                     SmashBall ball2 = new SmashBall(newPoint, imageStore.getImageList("ball"), 0, 20);
+                     world.tryAddEntity(ball2);
+                     ball2.scheduleActions(scheduler, world, imageStore);
+                  }
+               }
             }
          }
       }
+
+      SmashBall ball = new SmashBall(pt, imageStore.getImageList("ball"), 0, 20);
+      world.tryAddEntity(ball);
+      ball.scheduleActions(scheduler, world, imageStore);
 
       //when u remove an entity, u have to unschedule to events
    }
