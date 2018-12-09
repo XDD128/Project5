@@ -90,6 +90,12 @@ final class Point
    {
       return new Vein( id, this, images, actionPeriod);
    }
+   public SmashBall createSmashBall(String id,
+                                    int actionPeriod, int animationPeriod, List<PImage> images)
+   {
+      return new SmashBall(this, images, actionPeriod, animationPeriod);
+   }
+
    public boolean adjacent( Point p2) {
       return (x == p2.x && Math.abs(y - p2.y) == 1) ||
               (y == p2.y && Math.abs(x - p2.x) == 1);
