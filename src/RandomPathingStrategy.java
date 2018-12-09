@@ -29,5 +29,6 @@ class RandomPathingStrategy
 
         Collections.shuffle(randomNeighbors);
         return randomNeighbors;
+
     }
 }
