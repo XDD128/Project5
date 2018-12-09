@@ -222,7 +222,7 @@ public final class VirtualWorld
                      world.removeEntity(world.getOccupancyCell(newPoint));
                      scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
 
-                     Mang0 ball2 = new Mang0(newPoint, imageStore.getImageList("mango"), 0, 20);
+                     Master ball2 = new Master(newPoint, imageStore.getImageList("master"), 0, 20);
                      world.tryAddEntity(ball2);
                      ball2.scheduleActions(scheduler, world, imageStore);
                   }

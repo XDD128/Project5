@@ -41,12 +41,7 @@ public class Mang0 extends AbstractMovingEntity
                 world.addEntity(hand);
                 hand.scheduleActions( scheduler, world, imageStore);}
 
-                Quake quake = tgtPos.createQuake(
-                        imageStore.getImageList( QUAKE_KEY));
 
-                world.addEntity( quake);
-                nextPeriod += this.getActionPeriod();
-                quake.scheduleActions(scheduler, world, imageStore);
             }
 
 

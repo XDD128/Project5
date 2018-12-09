@@ -330,11 +330,15 @@ final class WorldModel
 
       return pos.nearestEntity(ofType);
    }
-   public Optional<Entity> findNearestAnything( Point pos)
-   {
+   public Optional<Entity> findNearestOtherThan( Point pos,
+                                        Class kind) {
       List<Entity> ofType = new LinkedList<>();
       for (Entity entity : entities) {
-         if (entity != null) {
+         if (entity.getClass() == OreBlob.class ||
+                 entity.getClass() == Ore.class ||
+                 entity.getClass() == MinerNotFull.class ||
+                 entity.getClass() == MinerFull.class ||
+                 entity.getClass() == Mang0.class) {
             ofType.add(entity);
          }
       }

@@ -15,7 +15,6 @@ public class Master extends AbstractMovingEntity
     {
 
         super(position,images,actionPeriod, animationPeriod);
-        this.strategy = new RandomPathingStrategy();
         this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
     }
 
@@ -23,7 +22,7 @@ public class Master extends AbstractMovingEntity
 
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
-        Optional<Entity> closestEntity = world.findNearestAnything(this.getPosition());
+        Optional<Entity> closestEntity = world.findNearestOtherThan(this.getPosition(), getClass());
 
         long nextPeriod = this.getActionPeriod();
 
@@ -58,6 +57,6 @@ public class Master extends AbstractMovingEntity
 
     public boolean getOccupance(WorldModel world, Point newPos){
         Optional<Entity> occupant = world.getOccupant(newPos);
-        return (occupant.isPresent());
+        return (occupant.isPresent() && !(occupant.get().getClass() == OreBlob.class));
     }
 }
