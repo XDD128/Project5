@@ -330,6 +330,17 @@ final class WorldModel
 
       return pos.nearestEntity(ofType);
    }
+   public Optional<Entity> findNearestAnything( Point pos)
+   {
+      List<Entity> ofType = new LinkedList<>();
+      for (Entity entity : entities) {
+         if (entity != null) {
+            ofType.add(entity);
+         }
+      }
+
+      return pos.nearestEntity(ofType);
+   }
 
    public Optional<Point> findOpenAround(Point pos) {
       for (int dy = -ORE_REACH; dy <= ORE_REACH; dy++) {

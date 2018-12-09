@@ -3,44 +3,36 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Optional;
 
-public class Mang0 extends AbstractMovingEntity
+public class Master extends AbstractMovingEntity
 {
     private final String QUAKE_KEY = "quake";
 
 
 
-    public Mang0 ( Point position,
-                     List<PImage> images,
-                     int actionPeriod, int animationPeriod)
+    public Master ( Point position,
+                       List<PImage> images,
+                       int actionPeriod, int animationPeriod)
     {
 
         super(position,images,actionPeriod, animationPeriod);
-
+        this.strategy = new RandomPathingStrategy();
+        this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
     }
 
 
 
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
-        Optional<Entity> Mang0Target = world.findNearest(
-                this.getPosition(), SmashBall.class);
-        //change above to Vein.class
+        Optional<Entity> closestEntity = world.findNearestAnything(this.getPosition());
+
         long nextPeriod = this.getActionPeriod();
 
-        if (Mang0Target.isPresent())
+        if (closestEntity.isPresent())
         {                                   //changed position to .getPosition()
-            Point tgtPos = Mang0Target.get().getPosition();
+            Point tgtPos = closestEntity.get().getPosition();
 
-            if (moveTo( world, Mang0Target.get(), scheduler))
+            if (moveTo( world, closestEntity.get(), scheduler))
             {   //change Entity to ActiveEntity
-                Master hand = new Master(getPosition(), getImages(),
-                        getActionPeriod(), getAnimationPeriod());
-                world.removeEntity(this);
-                scheduler.unscheduleAllEvents(this);
-
-                world.addEntity(hand);
-                hand.scheduleActions( scheduler, world, imageStore);}
-
                 Quake quake = tgtPos.createQuake(
                         imageStore.getImageList( QUAKE_KEY));
 
@@ -48,12 +40,14 @@ public class Mang0 extends AbstractMovingEntity
                 nextPeriod += this.getActionPeriod();
                 quake.scheduleActions(scheduler, world, imageStore);
             }
-
+        }
 
         scheduler.scheduleEvent( this,
                 new Activity(this, world, imageStore),
                 nextPeriod);
     }
+
+
     public void _moveTo(WorldModel world, Entity target, EventScheduler scheduler){
 
         world.removeEntity(target);
@@ -64,6 +58,6 @@ public class Mang0 extends AbstractMovingEntity
 
     public boolean getOccupance(WorldModel world, Point newPos){
         Optional<Entity> occupant = world.getOccupant(newPos);
-        return (occupant.isPresent() && !(occupant.get().getClass() == Ore.class));
+        return (occupant.isPresent());
     }
 }
