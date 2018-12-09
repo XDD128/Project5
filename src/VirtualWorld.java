@@ -189,18 +189,39 @@ public final class VirtualWorld
 
       Point pt = mouseToPoint(mouseY, mouseX);
       Background none = new Background("none", imageStore.getImageList("none"));
+
+      if (world.isOccupied(pt)) {
+         System.out.println(world.getOccupancyCell(pt));
+         scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
+         world.removeEntity(world.getOccupancyCell(pt));
+      }
+
+      MinerNotFull miner = new MinerNotFull("miner", pt, imageStore.getImageList("miner"), 4, 0, 5, 6);
+//      world.tryAddEntity(miner);
+//      miner.scheduleActions( scheduler, world, imageStore);
+
+      SmashBall ball = new SmashBall(pt, imageStore.getImageList("ball"), 0, 20);
+      world.tryAddEntity(ball);
+      ball.scheduleActions(scheduler, world, imageStore);
+
+
+
+
+
 //      world.setBackgroundCell(pt, none);
       // double for loop through every point in the world (tilewidth and tileheight, if the point is 7 manhattan distance away from click
       for (int i = 0; i < world.getNumRows(); i++){
          for (int j = 0; j < world.getNumCols(); j++){
-            Point newPoint = new Point(i, j);
-            if (manhattan(newPoint, pt) < 7){
+            Point newPoint = new Point(j, i);
+
+
+            if (manhattan(newPoint, pt) < 7) {
                world.setBackgroundCell(newPoint, none);
             }
          }
       }
 
-      //when u remove an entity, u have to uschedule to events
+      //when u remove an entity, u have to unschedule to events
    }
 
    public int manhattan(Point a, Point b){

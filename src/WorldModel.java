@@ -49,6 +49,7 @@ final class WorldModel
    private final int VEIN_COL = 2;
    private final int VEIN_ROW = 3;
    private final int VEIN_ACTION_PERIOD = 4;
+
    private int numRows;
    private int numCols;
    private Background background[][];

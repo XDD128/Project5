@@ -29,3 +29,10 @@ rocks images/rock.bmp
 vein images/vein.bmp
 background_default images/none.bmp
 none images/none.bmp
+ball images/ball1.bmp 255 255 255 0
+ball images/ball2.bmp 255 255 255 0
+ball images/ball3.bmp 255 255 255 0
+ball images/ball4.bmp 255 255 255 0
+ball images/ball5.bmp 255 255 255 0
+ball images/ball6.bmp 255 255 255 0
+ball images/ball7.bmp 255 255 255 0
