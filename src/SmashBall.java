@@ -15,7 +15,8 @@ public class SmashBall extends AbstractMovingEntity
     {
 
         super(position,images,actionPeriod, animationPeriod);
-
+        this.strategy = new RandomPathingStrategy();
+        this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
     }
 
 
@@ -23,7 +24,7 @@ public class SmashBall extends AbstractMovingEntity
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
         Optional<Entity> ballTarget = world.findNearest(
-                this.getPosition(), OreBlob.class);
+                this.getPosition(), MinerNotFull.class);
         //change above to Vein.class
         long nextPeriod = this.getActionPeriod();
 
@@ -46,6 +47,8 @@ public class SmashBall extends AbstractMovingEntity
                 new Activity(this, world, imageStore),
                 nextPeriod);
     }
+
+
     public void _moveTo(WorldModel world, Entity target, EventScheduler scheduler){
 
         world.removeEntity(target);

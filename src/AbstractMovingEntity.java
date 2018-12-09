@@ -2,14 +2,19 @@ import processing.core.PImage;
 
 import java.util.List;
 import java.util.Optional;
-public abstract class AbstractMovingEntity extends AbstractAnimatedEntity implements ActiveEntity, AnimatedEntity {
+import java.util.function.Function;
+import java.util.stream.Stream;
 
+public abstract class AbstractMovingEntity extends AbstractAnimatedEntity implements ActiveEntity, AnimatedEntity {
+    protected PathingStrategy strategy;
+    protected Function<Point, Stream<Point>> SELECTED_NEIGHBORS;
 
     public AbstractMovingEntity(Point position,
                                 List<PImage> images,
                                 int actionPeriod, int animationPeriod) {
         super(position, images, actionPeriod, animationPeriod);
-
+        this.strategy = new AStarPathingStrategy();
+        this.SELECTED_NEIGHBORS = PathingStrategy.CARDINAL_NEIGHBORS;
     }
    public boolean moveTo( WorldModel world,
                                    Entity target, EventScheduler scheduler) {
@@ -36,11 +41,10 @@ public abstract class AbstractMovingEntity extends AbstractAnimatedEntity implem
 
         List<Point> points;
 
-        PathingStrategy strategy = new AStarPathingStrategy();
         points = strategy.computePath(getPosition(), destPos,
                 p ->  world.withinBounds(p) && getOccupance(world, destPos) && !world.isOccupied(p),
                 (p1, p2) -> neighbors(p1,p2),
-                PathingStrategy.CARDINAL_NEIGHBORS);
+                SELECTED_NEIGHBORS);
 
         if (points.size() == 0)
         {
@@ -79,6 +83,8 @@ public abstract class AbstractMovingEntity extends AbstractAnimatedEntity implem
         return newPos;
         */
     }
+    public void setStrategy(PathingStrategy newStrategy){this.strategy = newStrategy;}
+
     private static boolean neighbors(Point p1, Point p2)
     {
         return p1.x+1 == p2.x && p1.y == p2.y ||
