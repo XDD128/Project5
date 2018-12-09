@@ -1,0 +1,10 @@
+visual:
+black friday turns tiles supreme squares
+
+effect (within black friday explosion):
+miners turned into hypebeasts
+miners switch from astar to simplestep
+ores turn into supreme bricks
+
+entity (fry's mascot):
+virgil abloh chases hypebeasts and eats them
