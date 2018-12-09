@@ -33,6 +33,8 @@ public final class VirtualWorld
    public static final double FASTER_SCALE = 0.25;
    public static final double FASTEST_SCALE = 0.10;
 
+   public int clickCount = 0;
+
    public static double timeScale = 1.0;
 
    public ImageStore imageStore;
@@ -180,8 +182,37 @@ public final class VirtualWorld
       }
    }
 
-   public Point mouseClickToPoint()
-      Point pt = new Point(mouseY, mouseX);
+   public void mouseClicked(){
+//      System.out.println(mouseX);
+//      System.out.println(mouseY);
+
+
+      Point pt = mouseToPoint(mouseY, mouseX);
+      Background none = new Background("none", imageStore.getImageList("none"));
+//      world.setBackgroundCell(pt, none);
+      // double for loop through every point in the world (tilewidth and tileheight, if the point is 7 manhattan distance away from click
+      for (int i = 0; i < world.getNumRows(); i++){
+         for (int j = 0; j < world.getNumCols(); j++){
+            Point newPoint = new Point(i, j);
+            if (manhattan(newPoint, pt) < 7){
+               world.setBackgroundCell(newPoint, none);
+            }
+         }
+      }
+
+      //when u remove an entity, u have to uschedule to events
+   }
+
+   public int manhattan(Point a, Point b){
+      int distance = Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+      return distance;
+   }
+
+
+   public Point mouseToPoint(int x, int y){
+      return view.getViewport().viewportToWorld(y/view.getTileHeight(), x/view.getTileWidth());
+   }
+
       
 
    public static void main(String [] args)

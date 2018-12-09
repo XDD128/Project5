@@ -21,6 +21,12 @@ final class WorldView
       this.viewport = new Viewport(numRows, numCols);
    }
 
+   public int getTileWidth(){return this.tileWidth;}
+
+   public int getTileHeight(){return this.tileHeight;}
+
+   public Viewport getViewport(){return this.viewport;}
+
    public int clamp(int value, int low, int high)
    {
       return Math.min(high, Math.max(value, low));
