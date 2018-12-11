@@ -1,10 +1,19 @@
-visual:
-black friday turns tiles supreme squares
+1. How to trigger the event:
+Click anywhere to trigger a void rip.
 
-effect (within black friday explosion):
-miners turned into hypebeasts
-miners switch from astar to simplestep
-ores turn into supreme bricks
+2. What should happen when the event is triggered:
+Any click will spawn a smash ball at its location.
+The background is changed into a rip in the void for where the click happens.
 
-entity (fry's mascot):
-virgil abloh chases hypebeasts and eats them
+3. What the affected entities should do:
+The newly spawned smash ball floats around randomly.
+Any miners or ore blobs caught in the void are transformed into mangoes.
+
+4. What the new entity is and how it should behave:
+The mangoes now target smash balls to destroy.
+Furthermore, mangoes that destroy the smash balls become masters, who in turn destroy everything in its path.
+
+5.
+Perry Ting implemented the initial click effect (removal of entity if present, affect tiles within the area, add a smash ball in its place, and transform all miners/oreblobs within the area), and created all the .bmp images.
+
+Samuel Wong implemented the Master class, Mang0 class, and the SmashBall class alongside all their respective data, moving patterns, execution, and functions that allow for their operation. 
