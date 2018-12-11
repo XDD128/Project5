@@ -34,15 +34,16 @@ public class Mang0 extends AbstractDestroyer
 
                 ((SmashBall)target.get()).damage(1);
 
-                System.out.println((((SmashBall)target.get()).getHealth()));
+                System.out.println("Miner hit Smash Ball to: " + (((SmashBall)target.get()).getHealth()));
 
                 if (((SmashBall)target.get()).getHealth() == 0) {
                     {
+                        System.out.println("THE MASTER HAS AWAKENED");
                         Master hand = new Master(getPosition(), imageStore.getImageList("master"),
                                 getActionPeriod(), getAnimationPeriod());
 
-                    world.removeEntity(this);
-                    scheduler.unscheduleAllEvents(this);
+                        world.removeEntity(this);
+                        scheduler.unscheduleAllEvents(this);
 
                     world.removeEntity(target.get());
                     scheduler.unscheduleAllEvents(target.get());

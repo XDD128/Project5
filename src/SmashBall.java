@@ -19,7 +19,7 @@ public class SmashBall extends AbstractDestroyer
         this.strategy = new RandomPathingStrategy();
         this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
         this.health = 10;
-        this.damaged = false;
+
     }
     public SmashBall ( Point position,
                        List<PImage> images,
@@ -30,7 +30,7 @@ public class SmashBall extends AbstractDestroyer
         this.strategy = new RandomPathingStrategy();
         this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
         this.health = health;
-        this.damaged = false;
+
     }
 
 
@@ -38,8 +38,7 @@ public class SmashBall extends AbstractDestroyer
         Optional<Entity> target = getNearestTarget(world);
         //change above to Vein.class
         long nextPeriod = this.getActionPeriod();
-        System.out.println("Health:" + health);
-        System.out.println(damaged);
+
 
         if (target.isPresent()) {                                   //changed position to .getPosition()
             Point tgtPos = target.get().getPosition();
@@ -72,7 +71,7 @@ public class SmashBall extends AbstractDestroyer
 
 
 
-    public boolean damaged() {return damaged;}
+
 
     public int getHealth()
     {
@@ -81,9 +80,9 @@ public class SmashBall extends AbstractDestroyer
     public void damage(int amount)
     {
         health -= amount;
-        damaged = true;
+
     }
-    public Point nextPosition
+
     protected Optional<Entity> getNearestTarget(WorldModel world)
     {
         return world.findNearestOtherThan(getPosition(), Ore.class);
