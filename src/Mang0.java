@@ -79,9 +79,7 @@ public class Mang0 extends AbstractDestroyer
                 this.getPosition(), SmashBall.class);
     }
 
-    public void _moveTo(WorldModel world, Entity target, EventScheduler scheduler){
-        return;
-    }
+
 
 
 }

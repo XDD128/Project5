@@ -3,9 +3,9 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Optional;
 
-public class Master extends AbstractMovingEntity
+public class Master extends AbstractDestroyer
 {
-    private final String QUAKE_KEY = "quake";
+
 
 
 
@@ -21,41 +21,15 @@ public class Master extends AbstractMovingEntity
 
 
 
-    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
-        Optional<Entity> closestEntity = world.findNearestOtherThan(this.getPosition(), getClass());
 
-        long nextPeriod = this.getActionPeriod();
 
-        if (closestEntity.isPresent())
-        {                                   //changed position to .getPosition()
-            Point tgtPos = closestEntity.get().getPosition();
 
-            if (moveTo( world, closestEntity.get(), scheduler))
-            {   //change Entity to ActiveEntity
-                Quake quake = tgtPos.createQuake(
-                        imageStore.getImageList( QUAKE_KEY));
 
-                world.addEntity( quake);
-                nextPeriod += this.getActionPeriod();
-                quake.scheduleActions(scheduler, world, imageStore);
-            }
-        }
 
-        scheduler.scheduleEvent( this,
-                new Activity(this, world, imageStore),
-                nextPeriod);
+
+    protected Optional<Entity> getNearestTarget(WorldModel world)
+    {
+        return world.findNearestOtherThan(this.getPosition(), getClass());
     }
 
-
-    public void _moveTo(WorldModel world, Entity target, EventScheduler scheduler){
-
-        world.removeEntity(target);
-        scheduler.unscheduleAllEvents(target);
-
-    }
-
-
-    public boolean getOccupance(WorldModel world, Point newPos){
-        return world.isOccupied(newPos);
-    }
 }
