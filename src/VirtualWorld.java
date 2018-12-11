@@ -215,14 +215,17 @@ public final class VirtualWorld
 
             if (manhattan(newPoint, pt) < 5) {
                world.setBackgroundCell(newPoint, none);
+
+               //replace all miners or oreblobs within 5 range into a mang0
                if (world.isOccupied(newPoint)){
                   if(world.getOccupancyCell(newPoint).getClass().equals(MinerNotFull.class) ||
-                     world.getOccupancyCell(newPoint).getClass().equals(MinerFull.class)){
+                     world.getOccupancyCell(newPoint).getClass().equals(MinerFull.class) ||
+                     world.getOccupancyCell(newPoint).getClass().equals(OreBlob.class)){
                      System.out.println(world.getOccupancyCell(newPoint).getClass());
                      world.removeEntity(world.getOccupancyCell(newPoint));
                      scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
 
-                     Master ball2 = new Master(newPoint, imageStore.getImageList("master"), 0, 20);
+                     Mang0 ball2 = new Mang0(newPoint, imageStore.getImageList("mango"), 0, 50);
                      world.tryAddEntity(ball2);
                      ball2.scheduleActions(scheduler, world, imageStore);
                   }
