@@ -225,9 +225,9 @@ public final class VirtualWorld
                      world.removeEntity(world.getOccupancyCell(newPoint));
                      scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
 
-                     Mang0 ball2 = new Mang0(newPoint, imageStore.getImageList("mango"), 0, 50);
-                     world.tryAddEntity(ball2);
-                     ball2.scheduleActions(scheduler, world, imageStore);
+                     Mang0 mango = new Mang0(newPoint, imageStore.getImageList("mango"), 0, 50);
+                     world.tryAddEntity(mango);
+                     mango.scheduleActions(scheduler, world, imageStore);
                   }
                }
             }

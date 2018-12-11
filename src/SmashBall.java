@@ -3,62 +3,94 @@ import processing.core.PImage;
 import java.util.List;
 import java.util.Optional;
 
-public class SmashBall extends AbstractMovingEntity
+public class SmashBall extends AbstractDestroyer
 {
     private final String QUAKE_KEY = "quake";
 
-
+    private int health;
+    private boolean damaged;
 
     public SmashBall ( Point position,
-                     List<PImage> images,
-                     int actionPeriod, int animationPeriod)
+                       List<PImage> images,
+                       int actionPeriod, int animationPeriod)
     {
 
         super(position,images,actionPeriod, animationPeriod);
         this.strategy = new RandomPathingStrategy();
         this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
+        this.health = 10;
+        this.damaged = false;
+    }
+    public SmashBall ( Point position,
+                       List<PImage> images,
+                       int actionPeriod, int animationPeriod, int health)
+    {
+
+        super(position,images,actionPeriod, animationPeriod);
+        this.strategy = new RandomPathingStrategy();
+        this.SELECTED_NEIGHBORS = PathingStrategy.DIAGONAL_CARDINAL_NEIGHBORS;
+        this.health = health;
+        this.damaged = false;
     }
 
 
-
-
-    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
-        Optional<Entity> ballTarget = world.findNearest(
-                this.getPosition(), MinerNotFull.class);
+    public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler) {
+        Optional<Entity> target = getNearestTarget(world);
         //change above to Vein.class
         long nextPeriod = this.getActionPeriod();
+        System.out.println("Health:" + health);
+        System.out.println(damaged);
 
-        if (ballTarget.isPresent())
-        {                                   //changed position to .getPosition()
-            Point tgtPos = ballTarget.get().getPosition();
+        if (target.isPresent()) {                                   //changed position to .getPosition()
+            Point tgtPos = target.get().getPosition();
 
-            if (moveTo( world, ballTarget.get(), scheduler))
-            {   //change Entity to ActiveEntity
-                Quake quake = tgtPos.createQuake(
-                        imageStore.getImageList( QUAKE_KEY));
+            if (getPosition().adjacent(tgtPos)) {  //change Entity to ActiveEntity
+                if (damaged) {
+                    BallHit weakenedSmashBall = new BallHit(getPosition(), imageStore.getImageList("ballhit"), 0, 20, health);
 
-                world.addEntity( quake);
-                nextPeriod += this.getActionPeriod();
-                quake.scheduleActions(scheduler, world, imageStore);
-            }
-        }
+                    world.removeEntity(this);
+                    scheduler.unscheduleAllEvents(this);
 
-        scheduler.scheduleEvent( this,
-                new Activity(this, world, imageStore),
-                nextPeriod);
+                    world.addEntity(weakenedSmashBall);
+                    weakenedSmashBall.scheduleActions(scheduler, world, imageStore);
+
+                    nextPeriod += this.getActionPeriod();
+                }
+
+            } else {
+                Point nextPos = nextPosition( world, target.get().getPosition());
+
+                if (!getPosition().equals(nextPos)) {
+                    Optional<Entity> occupant = world.getOccupant(nextPos);
+                    if (occupant.isPresent()) {
+                        scheduler.unscheduleAllEvents(occupant.get());
+                    }
+
+                    world.moveEntity(this, nextPos);
+                }
+
+            scheduler.scheduleEvent(this,
+                    new Activity(this, world, imageStore),
+                    nextPeriod);
+        }}
+
+
     }
 
 
-    public void _moveTo(WorldModel world, Entity target, EventScheduler scheduler){
 
-        world.removeEntity(target);
-        scheduler.unscheduleAllEvents(target);
-
+    public int getHealth()
+    {
+        return health;
+    }
+    public void damage(int amount)
+    {
+        health -= amount;
+        damaged = true;
+    }
+    protected Optional<Entity> getNearestTarget(WorldModel world)
+    {
+        return world.findNearestOtherThan(getPosition(), Ore.class);
     }
 
-
-    public boolean getOccupance(WorldModel world, Point newPos){
-        Optional<Entity> occupant = world.getOccupant(newPos);
-        return (occupant.isPresent() && !(occupant.get().getClass() == OreBlob.class));
-    }
 }
