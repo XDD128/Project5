@@ -33,6 +33,7 @@ public class Mang0 extends AbstractDestroyer
             if (getPosition().adjacent( target.get().getPosition())) {
 
                 ((SmashBall)target.get()).damage(1);
+
                 System.out.println((((SmashBall)target.get()).getHealth()));
 
                 if (((SmashBall)target.get()).getHealth() == 0) {

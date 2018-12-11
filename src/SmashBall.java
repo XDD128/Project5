@@ -43,40 +43,36 @@ public class SmashBall extends AbstractDestroyer
 
         if (target.isPresent()) {                                   //changed position to .getPosition()
             Point tgtPos = target.get().getPosition();
-            Point nextPos = nextPosition( world, target.get().getPosition());
+
          //change Entity to ActiveEntity
-            if (damaged) {
-                    BallHit weakenedSmashBall = new BallHit(getPosition(), imageStore.getImageList("ballhit"), 200, 20, health);
 
-                    world.removeEntity(this);
-                    scheduler.unscheduleAllEvents(this);
 
-                    world.addEntity(weakenedSmashBall);
-                    weakenedSmashBall.scheduleActions(scheduler, world, imageStore);
+                Point nextPos = nextPosition( world, target.get().getPosition());
 
-                    nextPeriod += this.getActionPeriod();
+                if (!getPosition().equals(nextPos)) {
+                    Optional<Entity> occupant = world.getOccupant(nextPos);
+                    if (occupant.isPresent()) {
+                        scheduler.unscheduleAllEvents(occupant.get());
+                    }
+
+                    world.moveEntity(this, nextPos);
                 }
 
-
-            else if (!getPosition().equals(nextPos)) {
-                Optional<Entity> occupant = world.getOccupant(nextPos);
-                if (occupant.isPresent()) {
-                    scheduler.unscheduleAllEvents(occupant.get());
-                }
-
-                world.moveEntity(this, nextPos);
             }
+
+
+
 
 
             scheduler.scheduleEvent(this,
                     new Activity(this, world, imageStore),
                     nextPeriod);
-        }}
+        }
 
 
 
 
-
+    public boolean damaged() {return damaged;}
 
     public int getHealth()
     {
@@ -87,6 +83,7 @@ public class SmashBall extends AbstractDestroyer
         health -= amount;
         damaged = true;
     }
+    public Point nextPosition
     protected Optional<Entity> getNearestTarget(WorldModel world)
     {
         return world.findNearestOtherThan(getPosition(), Ore.class);
