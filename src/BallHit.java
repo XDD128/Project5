@@ -19,7 +19,7 @@ public class BallHit extends AbstractMovingEntity
 
 
     public void executeActivity(WorldModel world, ImageStore imageStore, EventScheduler scheduler){
-        SmashBall weakenedSmashBall = new SmashBall(getPosition(), imageStore.getImageList("ball"), 0, 20, health);
+        SmashBall weakenedSmashBall = new SmashBall(getPosition(), imageStore.getImageList("ball"), 100, 20, health);
         scheduler.unscheduleAllEvents(this);
         world.removeEntity(this);
 

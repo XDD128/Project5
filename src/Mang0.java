@@ -30,7 +30,7 @@ public class Mang0 extends AbstractDestroyer
         if (target.isPresent())
         {                                   //changed position to .getPosition()
             Point tgtPos = target.get().getPosition();
-            if (moveTo( world, target.get(), scheduler)) {   //change Entity to ActiveEntity
+            if (getPosition().adjacent( target.get().getPosition())) {
 
                 ((SmashBall)target.get()).damage(1);
                 System.out.println((((SmashBall)target.get()).getHealth()));
@@ -50,7 +50,18 @@ public class Mang0 extends AbstractDestroyer
                     hand.scheduleActions(scheduler, world, imageStore);
                 }
             }
-                }
+                }else {
+                Point nextPos = nextPosition( world, target.get().getPosition());
+
+                if (!getPosition().equals(nextPos)) {
+                    Optional<Entity> occupant = world.getOccupant(nextPos);
+                    if (occupant.isPresent()) {
+                        scheduler.unscheduleAllEvents(occupant.get());
+                    }
+
+                    world.moveEntity(this, nextPos);
+        }
+            }
 
             }
 

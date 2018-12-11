@@ -225,7 +225,7 @@ public final class VirtualWorld
                      world.removeEntity(world.getOccupancyCell(newPoint));
                      scheduler.unscheduleAllEvents(world.getOccupancyCell(pt));
 
-                     Mang0 mango = new Mang0(newPoint, imageStore.getImageList("mango"), 0, 50);
+                     Mang0 mango = new Mang0(newPoint, imageStore.getImageList("mango"), 200, 20);
                      world.tryAddEntity(mango);
                      mango.scheduleActions(scheduler, world, imageStore);
                   }
@@ -234,7 +234,7 @@ public final class VirtualWorld
          }
       }
 
-      SmashBall ball = new SmashBall(pt, imageStore.getImageList("ball"), 0, 20);
+      SmashBall ball = new SmashBall(pt, imageStore.getImageList("ball"), 100, 20);
       world.tryAddEntity(ball);
       ball.scheduleActions(scheduler, world, imageStore);
 

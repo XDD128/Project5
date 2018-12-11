@@ -338,7 +338,10 @@ final class WorldModel
                  entity.getClass() == Ore.class ||
                  entity.getClass() == MinerNotFull.class ||
                  entity.getClass() == MinerFull.class ||
-                 entity.getClass() == Mang0.class) {
+                 entity.getClass() == Mang0.class||
+                  entity.getClass() == Vein.class||
+                 entity.getClass() == SmashBall.class
+                  ) {
             ofType.add(entity);
          }
       }

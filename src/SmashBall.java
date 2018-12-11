@@ -43,10 +43,10 @@ public class SmashBall extends AbstractDestroyer
 
         if (target.isPresent()) {                                   //changed position to .getPosition()
             Point tgtPos = target.get().getPosition();
-
-            if (getPosition().adjacent(tgtPos)) {  //change Entity to ActiveEntity
-                if (damaged) {
-                    BallHit weakenedSmashBall = new BallHit(getPosition(), imageStore.getImageList("ballhit"), 0, 20, health);
+            Point nextPos = nextPosition( world, target.get().getPosition());
+         //change Entity to ActiveEntity
+            if (damaged) {
+                    BallHit weakenedSmashBall = new BallHit(getPosition(), imageStore.getImageList("ballhit"), 200, 20, health);
 
                     world.removeEntity(this);
                     scheduler.unscheduleAllEvents(this);
@@ -57,17 +57,16 @@ public class SmashBall extends AbstractDestroyer
                     nextPeriod += this.getActionPeriod();
                 }
 
-            } else {
-                Point nextPos = nextPosition( world, target.get().getPosition());
 
-                if (!getPosition().equals(nextPos)) {
-                    Optional<Entity> occupant = world.getOccupant(nextPos);
-                    if (occupant.isPresent()) {
-                        scheduler.unscheduleAllEvents(occupant.get());
-                    }
-
-                    world.moveEntity(this, nextPos);
+            else if (!getPosition().equals(nextPos)) {
+                Optional<Entity> occupant = world.getOccupant(nextPos);
+                if (occupant.isPresent()) {
+                    scheduler.unscheduleAllEvents(occupant.get());
                 }
+
+                world.moveEntity(this, nextPos);
+            }
+
 
             scheduler.scheduleEvent(this,
                     new Activity(this, world, imageStore),
@@ -75,7 +74,7 @@ public class SmashBall extends AbstractDestroyer
         }}
 
 
-    }
+
 
 
 
