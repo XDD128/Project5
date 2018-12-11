@@ -56,7 +56,6 @@ public class Master extends AbstractMovingEntity
 
 
     public boolean getOccupance(WorldModel world, Point newPos){
-        Optional<Entity> occupant = world.getOccupant(newPos);
-        return (occupant.isPresent() && !(occupant.get().getClass() == OreBlob.class));
+        return world.isOccupied(newPos);
     }
 }

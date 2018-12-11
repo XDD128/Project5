@@ -33,7 +33,7 @@ public class Mang0 extends AbstractMovingEntity
 
             if (moveTo( world, Mang0Target.get(), scheduler))
             {   //change Entity to ActiveEntity
-                Master hand = new Master(getPosition(), getImages(),
+                Master hand = new Master(getPosition(), imageStore.getImageList("master"),
                         getActionPeriod(), getAnimationPeriod());
                 world.removeEntity(this);
                 scheduler.unscheduleAllEvents(this);
